@@ -22,6 +22,9 @@ const Home = () => {
         const data = await res.json()
         if(res.ok){
             setUsers(data)
+            setErrorMessage('')
+        }else{
+            setErrorMessage(data.message)
         }
     }
 
@@ -85,6 +88,10 @@ const Home = () => {
   return (
     <div className='min-h-screen'>
         <div className='max-w-6xl mx-auto p-3'>
+
+            {errorMessage && (
+                <p className='text-red-500 mt-4 font-semibold text-2xl bg-red-100 rounded-lg p-3'>{errorMessage}</p>
+            )}
             <h1 className='text-2xl font-semibold'>Users List</h1>
 
             <div className="overflow-x-auto">
