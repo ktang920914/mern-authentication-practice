@@ -16,15 +16,16 @@ const Home = () => {
     const [userIdToUpdate,setUserIdToUpdate] = useState('')
     const [usernameToUpdate,setUsernameToUpdate] = useState('')
     const [errorMessage,setErrorMessage] = useState('')
+    const [errorAuthMessage,setErrorAuthMessage] = useState(null)
 
     const fetchUsers = async () => {
         const res = await fetch('/api/auth/getUsers')
         const data = await res.json()
         if(res.ok){
             setUsers(data)
-            setErrorMessage('')
+            setErrorAuthMessage(null)
         }else{
-            setErrorMessage(data.message)
+            setErrorAuthMessage(data.message)
         }
     }
 
@@ -89,8 +90,8 @@ const Home = () => {
     <div className='min-h-screen'>
         <div className='max-w-6xl mx-auto p-3'>
 
-            {errorMessage && (
-                <p className='text-red-500 mt-4 font-semibold text-2xl bg-red-100 rounded-lg p-3'>{errorMessage}</p>
+            {errorAuthMessage && (
+                <p className='text-red-500 mt-4 font-semibold text-2xl bg-red-100 rounded-lg p-3'>{errorAuthMessage}</p>
             )}
             <h1 className='text-2xl font-semibold'>Users List</h1>
 

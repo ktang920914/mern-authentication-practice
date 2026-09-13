@@ -11,7 +11,7 @@ export const verifyToken = (req,res,next) => {
 
         jwt.verify(token, process.env.JWT_SECRET, (err,decoded) => {
             if(err){
-                return next(errorHandler(401, 'unauthorized'))
+                return next(errorHandler(401, 'Unauthorized'))
             }
             req.user = decoded
             next()
