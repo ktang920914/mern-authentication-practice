@@ -2,9 +2,11 @@ import { Button, Label, TextInput } from 'flowbite-react'
 import React from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import useUserstore from '../userStore'
 
 const Signin = () => {
 
+    const {signInSuccess} = useUserstore()
     const [formData,setFormData] = useState({})
     console.log(formData)
     const navigate = useNavigate()
@@ -28,6 +30,7 @@ const Signin = () => {
             })
             const data = await res.json()
             if(data.success === true){
+                signInSuccess(data.user)
                 navigate('/')
             }
             if(data.success === false){

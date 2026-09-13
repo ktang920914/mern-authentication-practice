@@ -3,9 +3,12 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import useUserstore from '../userStore';
+
 
 const Home = () => {
 
+    const {currentUser, updateCurrentUser} = useUserstore()
     const [users,setUsers] = useState([])
     const [openDeleteModal,setOpenDeleteModal] = useState(false)
     const [userIdToDelete,setUserIdToDelete] = useState('')
@@ -24,7 +27,7 @@ const Home = () => {
 
     useEffect(() => {
         fetchUsers()
-    },[])
+    },[currentUser._id])
 
     const handleFocus = () => {
         setErrorMessage('')
@@ -47,6 +50,9 @@ const Home = () => {
             const data = await res.json()
             if(res.ok){
                 setUsers((prevUsers) => prevUsers.map((user) => user._id === userIdToUpdate ? data : user))
+                if(currentUser._id === userIdToUpdate){
+                    updateCurrentUser(data)
+                }
                 setUserIdToUpdate('')
                 setOpenUpdateModal(false)
                 setErrorMessage('')
@@ -88,7 +94,6 @@ const Home = () => {
                         <TableHeadCell>No</TableHeadCell>
                         <TableHeadCell>Date</TableHeadCell>
                         <TableHeadCell>Username</TableHeadCell>
-                        <TableHeadCell>Password</TableHeadCell>
                         <TableHeadCell>Action</TableHeadCell>
                         </TableRow>
                     </TableHead>
@@ -101,7 +106,6 @@ const Home = () => {
                             </TableCell>
                             <TableCell>{new Date(user.updatedAt).toLocaleString()}</TableCell>
                             <TableCell>{user.username}</TableCell>
-                            <TableCell>{user.password}</TableCell>
                             <TableCell>
                                 <div className='flex gap-2'>
                                 <Button className='cursor-pointer'
